@@ -8,6 +8,10 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/
 """
 
 import os
+import sys
+
+# Add the project root to Python path for Vercel
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from django.core.wsgi import get_wsgi_application
 
