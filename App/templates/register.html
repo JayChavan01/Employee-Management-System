@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container animate__animated animate__fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm animate__animated animate__fadeInUp">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0 text-center"><i class="fas fa-user-plus me-2"></i>Employee Registration</h3>
+        </div>
+        <div class="card-body p-4">
+          <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="row g-3">
+              {% for field in form %}
+              <div class="col-md-6">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+              {% endfor %}
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <a href="{% url 'homepage' %}" class="btn btn-outline-secondary btn-action">
+                <i class="fas fa-arrow-left me-2"></i>Back to Home
+              </a>
+              <button type="submit" class="btn btn-primary btn-action">
+                <span class="submit-text"><i class="fas fa-save me-2"></i>Submit</span>
+                <span class="loading-spinner" style="display: none;">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span class="visually-hidden">Loading...</span>
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Add input masks if needed
+  const phoneInput = document.querySelector('input[type="tel"]');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function(e) {
+      let value = this.value.replace(/\D/g, '');
+      if (value.length > 3 && value.length <= 6) {
+        value = value.replace(/(\d{3})(\d{0,3})/, '($1) $2');
+      } else if (value.length > 6) {
+        value = value.replace(/(\d{3})(\d{3})(\d{0,4})/, '($1) $2-$3');
+      }
+      this.value = value;
+    });
+  }
+  
+  // Date picker initialization if needed
+  const dateInput = document.querySelector('input[type="date"]');
+  if (dateInput) {
+    dateInput.addEventListener('focus', function() {
+      this.type = 'date';
+    });
+    
+    dateInput.addEventListener('blur', function() {
+      if (!this.value) {
+        this.type = 'text';
+      }
+    });
+  }
+  
+  // Enhanced form validation
+  const form = document.querySelector('.needs-validation');
+  if (form) {
+    form.querySelectorAll('input, select, textarea').forEach(input => {
+      input.addEventListener('input', function() {
+        if (this.checkValidity()) {
+          this.classList.add('is-valid');
+          this.classList.remove('is-invalid');
+        } else {
+          this.classList.add('is-invalid');
+          this.classList.remove('is-valid');
+        }
+      });
+      
+      // Add floating labels effect
+      if (this.value) {
+        this.classList.add('filled');
+      }
+      
+      this.addEventListener('change', function() {
+        if (this.value) {
+          this.classList.add('filled');
+        } else {
+          this.classList.remove('filled');
+        }
+      });
+    });
+  }
+});
+</script>
+
+<style>
+  /* Floating labels effect */
+  .form-floating {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-floating label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    pointer-events: none;
+    border: 1px solid transparent;
+    transform-origin: 0 0;
+    transition: all 0.2s ease;
+    color: #6c757d;
+  }
+  
+  .form-floating input:focus ~ label,
+  .form-floating input.filled ~ label,
+  .form-floating select:focus ~ label,
+  .form-floating select.filled ~ label,
+  .form-floating textarea:focus ~ label,
+  .form-floating textarea.filled ~ label {
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+    opacity: 0.8;
+    background-color: white;
+    padding: 0 0.5rem;
+    left: 0.5rem;
+    height: auto;
+    color: var(--primary-color);
+  }
+  
+  /* Custom date input styling */
+  input[type="date"]:not(:focus):placeholder-shown {
+    color: transparent;
+  }
+  
+  input[type="date"]:not(:focus):not(:placeholder-shown) {
+    color: inherit;
+  }
+  
+  /* Loading spinner for submit button */
+  .loading-spinner {
+    display: none;
+    align-items: center;
+  }
+</style>
+{% endblock %}

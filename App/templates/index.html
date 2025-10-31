@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5 animate__animated animate__fadeIn">
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary mb-3 animate__animated animate__fadeInDown">Welcome to Employee Management System</h1>
+    <p class="lead text-muted animate__animated animate__fadeIn animate__delay-1s">Efficiently manage your workforce with our comprehensive solution</p>
+  </div>
+
+  <div class="row justify-content-center g-4 animate__animated animate__fadeIn animate__delay-1s">
+    <div class="col-md-5">
+      <div class="card h-100 border-0 shadow-sm animate__animated animate__fadeInLeft card-hover">
+        <div class="card-body text-center p-4">
+          <div class="icon-lg bg-primary bg-opacity-10 text-primary rounded-circle mb-4 mx-auto animate__animated animate__pulse animate__infinite animate__slow icon-hover">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 class="h4">View Employees</h3>
+          <p class="text-muted mb-4">Browse and manage all employee records in your organization</p>
+          <a href="{% url 'details' %}" class="btn btn-primary btn-lg px-4 btn-action btn-hover">
+            <i class="fas fa-list me-2"></i>View List
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="card h-100 border-0 shadow-sm animate__animated animate__fadeInRight card-hover">
+        <div class="card-body text-center p-4">
+          <div class="icon-lg bg-success bg-opacity-10 text-success rounded-circle mb-4 mx-auto animate__animated animate__pulse animate__infinite animate__slow icon-hover">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <h3 class="h4">Add New Employee</h3>
+          <p class="text-muted mb-4">Register new employees to your organization's database</p>
+          <a href="{% url 'register' %}" class="btn btn-success btn-lg px-4 btn-action btn-hover">
+            <i class="fas fa-plus me-2"></i>Add Employee
+          </a>
+        </div>
+      </div>
+    </div>  
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Enhanced ripple effect with color variation
+  document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+      // Remove any existing ripple
+      const existingRipple = this.querySelector('.ripple');
+      if (existingRipple) {
+        existingRipple.remove();
+      }
+      
+      // Create new ripple
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      
+      // Position the ripple
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      
+      // Set ripple color based on button type
+      if (this.classList.contains('btn-primary')) {
+        ripple.style.backgroundColor = 'rgba(13, 110, 253, 0.4)';
+      } else if (this.classList.contains('btn-success')) {
+        ripple.style.backgroundColor = 'rgba(25, 135, 84, 0.4)';
+      }
+      
+      this.appendChild(ripple);
+      
+      // Remove ripple after animation
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    });
+  });
+
+  // Card tilt effect on mouse move
+  document.querySelectorAll('.card-hover').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const angleX = (y - centerY) / 20;
+      const angleY = (centerX - x) / 20;
+      
+      card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+    });
+  });
+});
+</script>
+
+<style>
+  /* Ripple effect */
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s ease-out;
+    pointer-events: none;
+  }
+  
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+  
+  /* Card hover effects */
+  .card-hover {
+    transition: all 0.3s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2) !important;
+  }
+  
+  /* Icon hover effects */
+  .icon-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .icon-hover:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Button hover effects */
+  .btn-hover {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    transform: translateZ(0);
+  }
+  
+  .btn-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-hover:active {
+    transform: translateY(-1px);
+  }
+  
+  /* Smooth animations */
+  .animate__animated {
+    --animate-duration: 0.5s;
+  }
+  
+  /* Gradient background for cards */
+  .card-body {
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+  }
+  
+  .card-hover:hover .card-body {
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.9));
+  }
+</style>
+{% endblock %}

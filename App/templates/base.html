@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Loading.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/loading.css/2.0.0/loading.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+      :root {
+        --primary-color: #4361ee;
+        --primary-light: #e6e9ff;
+        --secondary-color: #3a0ca3;
+        --accent-color: #4cc9f0;
+        --success-color: #38b000;
+        --warning-color: #ffaa00;
+        --danger-color: #ef233c;
+        --light-bg: #f8f9fa;
+        --dark-color: #212529;
+        --text-color: #495057;
+        --border-radius: 12px;
+        --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+      
+      body {
+        background-color: var(--light-bg);
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .navbar {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 0.8rem 0;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      }
+      
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: white !important;
+        display: flex;
+        align-items: center;
+      }
+      
+      .navbar-brand i {
+        color: var(--accent-color);
+        margin-right: 0.5rem;
+      }
+      
+      .nav-link {
+        font-weight: 500;
+        padding: 0.5rem 1rem !important;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+      
+      .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: white !important;
+      }
+      
+      .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.25);
+        color: white !important;
+      }
+      
+      .card {
+        transition: var(--transition);
+        border: none;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--box-shadow);
+        margin-bottom: 1.5rem;
+        background-color: white;
+      }
+      
+      .card:hover {
+        transform: translateY(-5px) scale(1.01);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+      }
+      
+      .card-header {
+        font-weight: 600;
+        padding: 1.25rem 1.5rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+      }
+      
+      .btn {
+        font-weight: 500;
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        transition: var(--transition);
+        letter-spacing: 0.5px;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        border: none;
+      }
+      
+      .btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.5);
+        opacity: 0;
+        border-radius: 100%;
+        transform: scale(1, 1) translate(-50%, -50%);
+        transform-origin: 50% 50%;
+      }
+      
+      .btn:focus:not(:active)::after {
+        animation: ripple 0.6s ease-out;
+      }
+      
+      @keyframes ripple {
+        0% {
+          transform: scale(0, 0);
+          opacity: 0.5;
+        }
+        100% {
+          transform: scale(20, 20);
+          opacity: 0;
+        }
+      }
+      
+      .btn-action {
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .btn-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      }
+      
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+      }
+      
+      .btn-primary:hover {
+        background-color: var(--secondary-color);
+        color: white;
+      }
+      
+      .btn-success {
+        background-color: var(--success-color);
+        color: white;
+      }
+      
+      .btn-success:hover {
+        background-color: #2d8c00;
+        color: white;
+      }
+      
+      .btn-danger {
+        background-color: var(--danger-color);
+        color: white;
+      }
+      
+      .btn-danger:hover {
+        background-color: #d90429;
+        color: white;
+      }
+      
+      .btn-outline-secondary {
+        border: 1px solid #dee2e6;
+      }
+      
+      .btn-outline-secondary:hover {
+        background-color: #f8f9fa;
+      }
+      
+      .btn-loading {
+        position: relative;
+        pointer-events: none;
+      }
+      
+      .btn-loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 0.8s linear infinite;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      .icon-lg {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        background-color: var(--primary-light);
+        border-radius: 50%;
+        color: var(--primary-color);
+        font-size: 1.75rem;
+        transition: var(--transition);
+      }
+      
+      .form-control:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.25rem rgba(76, 201, 240, 0.25);
+      }
+      
+      .form-control.is-valid {
+        border-color: var(--success-color);
+        padding-right: calc(1.5em + 0.75rem);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2338b000' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+      }
+      
+      .form-control.is-invalid {
+        border-color: var(--danger-color);
+        padding-right: calc(1.5em + 0.75rem);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ef233c'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ef233c' stroke='none'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+      }
+      
+      .table {
+        background-color: white;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+      }
+      
+      .table th {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 500;
+        padding: 1rem;
+      }
+      
+      .table td {
+        padding: 0.75rem 1rem;
+        vertical-align: middle;
+      }
+      
+      .table tr:hover td {
+        background-color: rgba(67, 97, 238, 0.05);
+      }
+      
+      .action-btn {
+        margin: 0 5px;
+        min-width: 80px;
+      }
+      
+      /* Toast notifications */
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1100;
+      }
+      
+      .toast {
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        border: none;
+        margin-bottom: 1rem;
+      }
+      
+      /* Badges */
+      .badge {
+        padding: 0.35em 0.65em;
+        font-weight: 500;
+        border-radius: 6px;
+      }
+      
+      /* Stats cards */
+      .stats-card {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+      }
+      
+      .stats-card:hover {
+        transform: translateY(-5px);
+      }
+      
+      .stats-card h2 {
+        font-weight: 600;
+      }
+      
+      /* Confirmation modal */
+      .confirmation-modal .modal-content {
+        border-radius: var(--border-radius);
+        border: none;
+      }
+      
+      .confirmation-modal .modal-header {
+        background-color: var(--danger-color);
+        color: white;
+      }
+      
+      /* Loading overlay */
+      #globalLoader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+        display: none !important;
+      }
+      
+      /* Skeleton loading */
+      .skeleton {
+        position: relative;
+        overflow: hidden;
+        background-color: #e9ecef;
+      }
+      
+      .skeleton::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+        animation: shimmer 1.5s infinite;
+      }
+      
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+
+      /* Enhanced Footer Styles */
+      .footer {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent-color), rgba(255,255,255,0.5), var(--accent-color));
+        animation: gradientFlow 3s ease infinite;
+        background-size: 200% auto;
+      }
+
+      @keyframes gradientFlow {
+        0% { background-position: 0% center; }
+        100% { background-position: 200% center; }
+      }
+
+      .developer-credit {
+        font-size: 0.9rem;
+        position: relative;
+        padding-right: 1rem;
+      }
+
+      .developer-credit::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 20px;
+        width: 1px;
+        background: rgba(255,255,255,0.3);
+      }
+
+      .pulse {
+        animation: pulse 1.5s infinite;
+        color: #ff6b6b;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+      }
+
+      .developer-name {
+        display: inline-block;
+        background: linear-gradient(90deg, white, var(--accent-color));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .developer-name:hover {
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 5px rgba(255,255,255,0.3);
+        }
+        to {
+          text-shadow: 0 0 10px rgba(255,255,255,0.6), 0 0 15px rgba(76, 201, 240, 0.4);
+        }
+      }
+
+      .social-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        background: rgba(255,255,255,0.1);
+      }
+
+      .social-icon:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+
+      .social-icon i {
+        transition: transform 0.3s ease;
+      }
+
+      .social-icon:hover i {
+        transform: scale(1.2);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.25rem;
+        }
+        
+        .stats-card .d-flex {
+          flex-direction: column;
+        }
+        
+        .stats-card .border-start {
+          border-left: none !important;
+          border-top: 1px solid #dee2e6;
+          padding-top: 1rem;
+          margin-top: 1rem;
+        }
+        
+        .toast-container {
+          top: 10px;
+          right: 10px;
+          left: 10px;
+        }
+        
+        .toast {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+
+        .footer {
+          text-align: center;
+        }
+        
+        .developer-credit::after {
+          display: none;
+        }
+        
+        .social-icons {
+          justify-content: center !important;
+          margin-top: 1rem;
+        }
+      }
+    </style>
+
+    <title>Employee Management System</title>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'homepage' %}">
+          <i class="fas fa-users"></i>EmployeeMS
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'homepage' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == '/details/' %}active{% endif %}" href="{% url 'details' %}">Employees</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == '/register/' %}active{% endif %}" href="{% url 'register' %}">Add Employee</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow-1">
+      <div class="container my-4">
+        {% if messages %}
+          <div class="toast-container">
+            {% for message in messages %}
+              <div class="toast show align-items-center text-white bg-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %} border-0" role="alert">
+                <div class="d-flex">
+                  <div class="toast-body">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} me-2"></i>
+                    {{ message }}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
+        {% block content %}
+        {% endblock content %}
+      </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="footer bg-gradient-primary text-white py-4 mt-auto">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            <p class="mb-0 animate__animated animate__fadeIn">
+              © 2025 Employee Management System. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <div class="d-flex justify-content-center justify-content-md-end align-items-center gap-3">
+              <span class="developer-credit animate__animated animate__fadeIn animate__delay-1s">
+                Crafted with <i class="fas fa-heart pulse"></i> by 
+                <span class="developer-name animate__animated animate__pulse animate__infinite animate__slower">Jay Chavan</span>
+              </span>
+              <div class="social-icons d-flex gap-3">
+                <a href="#" class="text-white social-icon animate__animated animate__fadeIn animate__delay-2s">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="text-white social-icon animate__animated animate__fadeIn animate__delay-3s">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/jay-chavan-b9b26522a/" class="text-white social-icon animate__animated animate__fadeIn animate__delay-4s">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com/JayChavan01" class="text-white social-icon animate__animated animate__fadeIn animate__delay-5s">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Update Confirmation Modal -->
+    <div class="modal fade confirmation-modal" id="updateConfirmationModal" tabindex="-1" aria-labelledby="updateConfirmationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-warning text-white">
+            <h5 class="modal-title" id="updateConfirmationModalLabel"><i class="fas fa-exclamation-circle me-2"></i>Confirm Update</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to update this employee record?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" id="confirmUpdateBtn" class="btn btn-warning text-white">
+              <span class="submit-text">Confirm Update</span>
+              <span class="loading-spinner" style="display: none;">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span class="visually-hidden">Loading...</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Update confirmation modal handling
+      const updateModal = document.getElementById('updateConfirmationModal');
+      if (updateModal) {
+        const modal = new bootstrap.Modal(updateModal);
+        let originalForm = null;
+
+        // Handle form submissions with update confirmation
+        document.querySelectorAll('form.confirm-update').forEach(form => {
+          form.addEventListener('submit', function(e) {
+            if (!this.checkValidity()) {
+              e.preventDefault();
+              e.stopPropagation();
+              this.classList.add('was-validated');
+              return;
+            }
+
+            e.preventDefault();
+            originalForm = this;
+            modal.show();
+          });
+        });
+
+        // Handle confirm update button click
+        document.getElementById('confirmUpdateBtn').addEventListener('click', function() {
+          const submitBtn = this;
+          submitBtn.querySelector('.submit-text').style.display = 'none';
+          submitBtn.querySelector('.loading-spinner').style.display = 'inline-block';
+          submitBtn.disabled = true;
+          
+          // Show global loading
+          document.getElementById('globalLoader').style.display = 'flex';
+          
+          // Submit the original form
+          originalForm.submit();
+        });
+      }
+    });
+    </script>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade confirmation-modal" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteConfirmationModalLabel"><i class="fas fa-exclamation-triangle me-2"></i>Confirm Deletion</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete this employee record? This action cannot be undone.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <form id="deleteForm" method="post" action="">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">
+                <span class="submit-text">Delete Permanently</span>
+                <span class="loading-spinner" style="display: none;">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span class="visually-hidden">Loading...</span>
+                </span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Loading Overlay -->
+    <div id="globalLoader">
+      <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/338e65beaf.js" crossorigin="anonymous"></script>
+    
+    <!-- Custom JS -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        
+        // Delete confirmation modal handling
+        const deleteModal = document.getElementById('deleteConfirmationModal');
+        if (deleteModal) {
+          const modal = new bootstrap.Modal(deleteModal);
+          
+          // Handle delete button clicks
+          document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+              e.preventDefault();
+              const formId = this.getAttribute('data-form-id');
+              const form = document.getElementById(formId);
+              document.getElementById('deleteForm').action = form.action;
+              modal.show();
+            });
+          });
+          
+          // Handle delete form submission
+          document.getElementById('deleteForm').addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.querySelector('.submit-text').style.display = 'none';
+            submitBtn.querySelector('.loading-spinner').style.display = 'inline-block';
+            submitBtn.disabled = true;
+            
+            // Show global loading
+            document.getElementById('globalLoader').style.display = 'flex';
+          });
+        }
+        
+        // Auto-dismiss toasts after 5 seconds
+        setTimeout(() => {
+          const toasts = document.querySelectorAll('.toast');
+          toasts.forEach(toast => {
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.hide();
+          });
+        }, 5000);
+        
+        // Add animation to form elements
+        const formElements = document.querySelectorAll('input, select, textarea');
+        formElements.forEach(element => {
+          element.addEventListener('focus', () => {
+            element.parentElement.classList.add('animate__animated', 'animate__pulse');
+          });
+          element.addEventListener('blur', () => {
+            element.parentElement.classList.remove('animate__animated', 'animate__pulse');
+          });
+        });
+        
+        // Form validation
+        document.querySelectorAll('.needs-validation').forEach(form => {
+          form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+              
+              // Add shake animation to invalid fields
+              form.querySelectorAll(':invalid').forEach(function(element) {
+                element.classList.add('animate__animated', 'animate__shakeX');
+                setTimeout(function() {
+                  element.classList.remove('animate__animated', 'animate__shakeX');
+                }, 1000);
+              });
+            }
+            
+            form.classList.add('was-validated');
+          }, false);
+          
+          // Real-time validation
+          form.querySelectorAll('input, select, textarea').forEach(input => {
+            input.addEventListener('input', function() {
+              if (this.checkValidity()) {
+                this.classList.add('is-valid');
+                this.classList.remove('is-invalid');
+              } else {
+                this.classList.add('is-invalid');
+                this.classList.remove('is-valid');
+              }
+            });
+          });
+        });
+        
+        // Global form submission handler
+        document.querySelectorAll('form').forEach(form => {
+          form.addEventListener('submit', function() {
+            // Show loading state for submit buttons
+            const submitButtons = form.querySelectorAll('button[type="submit"]');
+            submitButtons.forEach(button => {
+              button.classList.add('btn-loading');
+              button.disabled = true;
+            });
+            
+            // Show global loading
+            document.getElementById('globalLoader').style.display = 'flex';
+          });
+        });
+        
+        // Toast notification helper
+        window.showToast = function(type, message) {
+          const toastContainer = document.querySelector('.toast-container') || document.createElement('div');
+          toastContainer.className = 'toast-container position-fixed top-20 end-20 z-index-1100';
+          document.body.appendChild(toastContainer);
+          
+          const toast = document.createElement('div');
+          toast.className = `toast show align-items-center text-white bg-${type} border-0`;
+          toast.setAttribute('role', 'alert');
+          toast.setAttribute('aria-live', 'assertive');
+          toast.setAttribute('aria-atomic', 'true');
+          
+          toast.innerHTML = `
+            <div class="d-flex">
+              <div class="toast-body">
+                <i class="fas ${getToastIcon(type)} me-2"></i>
+                ${message}
+              </div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+          `;
+          
+          toastContainer.appendChild(toast);
+          
+          // Auto-dismiss after 5 seconds
+          setTimeout(() => {
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.hide();
+            setTimeout(() => toast.remove(), 500);
+          }, 5000);
+        };
+        
+        function getToastIcon(type) {
+          const icons = {
+            'success': 'fa-check-circle',
+            'danger': 'fa-exclamation-circle',
+            'warning': 'fa-exclamation-triangle',
+            'info': 'fa-info-circle'
+          };
+          return icons[type] || 'fa-info-circle';
+        }
+      });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
